@@ -1,16 +1,19 @@
-package noteRoutes
+package userRoutes
 
 import (
+	"time"
+	"twitter-public-api/internals/handlers"
 	userhandler "twitter-public-api/internals/handlers/user"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetupNoteRoutes(router fiber.Router) {
+func SetupUserRoutes(router fiber.Router) {
 	note := router.Group("/:username")
-	// Read all Notes
-	note.Get("/", userhandler.GetProfile)
-	note.Get("/avatar", userhandler.GetAvatar)
-	// // Read one Note
-	note.Get("/tweets", userhandler.GetTweets)
+
+	note.Get("/", handlers.Cache(10*time.Minute), userhandler.GetProfile)
+
+	note.Get("/avatar", handlers.Cache(120*time.Minute), userhandler.GetAvatar)
+
+	note.Get("/tweets", handlers.Cache(60*time.Minute), userhandler.GetTweets)
 }

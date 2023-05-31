@@ -13,5 +13,5 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/", logger.New())
 
 	// Setup note routes, can use same syntax to add routes for more models
-	userRoutes.SetupNoteRoutes(api)
+	userRoutes.SetupUserRoutes(api)
 }
